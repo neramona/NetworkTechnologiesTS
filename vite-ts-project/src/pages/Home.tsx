@@ -1,11 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react'
+import {Helmet} from 'react-helmet'
 import { Button } from '../components/Button'
 import { Text } from '../components/Text'
 import { Input } from '../components/Input'
 
-interface Props {
-    serverData: {message: string; title:string} | null;
-}
+interface Props {}
 interface State {}
 
 class Home extends PureComponent<Props, State> {
@@ -18,22 +17,20 @@ class Home extends PureComponent<Props, State> {
     }
 
     render(): ReactNode {
-        const {serverData} = this.props;
         return (
-            <div className='p-5'>
-                <div>HOME</div>
-                {serverData ? (
-                    <div>
-                        <h2>{serverData.title}</h2>
-                        <p>{serverData.message}</p>
-                    </div>
-                ) : (
-                    <p>Загрузка...</p>
-                )}
-                <Button color="primary" size="large" title="OK"/>
-                <Text size="large" color="dark" weight="normal">RR</Text>
-                <Input size="medium" color="gray" placeholder="Enter text" />
-            </div>
+            <>
+                <Helmet>
+                    <title>Главная</title>
+                    <meta name='description' content='Добро пожаловать на главнуя страницу'/>
+                    <meta name='keywords' content='главная, React, сайт'/>
+                </Helmet>
+                <div className='p-5'>
+                    <div>HOME</div>
+                    <Button color="primary" size="large" title="OK" />
+                    <Text size="large" color="dark" weight="normal">RR</Text>
+                    <Input size="medium" color="gray" placeholder="Enter text" />
+                </div>
+            </>
         )
     }
 }

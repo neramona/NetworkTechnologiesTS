@@ -1,4 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
+import { Helmet } from 'react-helmet';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 
@@ -16,7 +17,7 @@ interface State {
     newItem: Item;
 }
 
-class Blog extends PureComponent<Props, State> {
+class Products extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -25,16 +26,43 @@ class Blog extends PureComponent<Props, State> {
             newItem: { title: '', description: '', price: '' },
         };
     }
+    componentDidMount() {
+        this.fetchProducts();   
+    }
+    fetchProducts = async () => {
+        try{
+            const response = await fetch("http://localhost:5000/api/products")
+            const data = await response.json();
+            this.setState({ items: data});
+        } catch(error){
+            console.error("Ошибка загрузки товаров:", error)
+        }
+    }
 
-    handleAdd = () => {
-        const { newItem, items } = this.state;
+    handleAdd = async () => {
+        const { newItem } = this.state;
         if (!newItem.title || !newItem.description || !newItem.price) return;
 
-        this.setState({
-            items: [...items, newItem],
-            newItem: { title: '', description: '', price: '' },
-            modalOpen: false,
-        });
+        try{
+            const response = await fetch("http://localhost:5000/api/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newItem)
+            })
+            if (response.ok){
+                const result = await response.json();
+                console.log("Товар добавлен:", result.product)
+                this.setState({modalOpen: false, newItem: {title: "", description: "",price: ""}})
+                this.fetchProducts();
+            } 
+            else {
+                console.error("Ошибка при добавлении товара")
+            }
+        } catch (error){
+            console.error("Ошибка запроса:", error);
+        }
     };
 
     handleChange = (key: keyof Item, value: string) => {
@@ -50,6 +78,12 @@ class Blog extends PureComponent<Props, State> {
         const { items, modalOpen, newItem } = this.state;
 
         return (
+        <>
+            <Helmet>
+                    <title>Товары</title>
+                    <meta name='description' content='Смотрите наши последние товары'/>
+                    <meta name='keywords' content='товары, React'/>
+            </Helmet>
             <div className="container mx-auto p-5">
                 <h1 className="text-2xl mb-4">Товары</h1>
                 <Button
@@ -114,8 +148,9 @@ class Blog extends PureComponent<Props, State> {
                     ))}
                 </div>
             </div>
+        </>
         );
     }
 }
 
-export default Blog;
+export default Products;

@@ -1,7 +1,7 @@
 
 export const Button = (props) =>{
     const {size, color, title, onClick} = props;
-    const defaultClass = "flex items-center rounded-2 h-[40px] w-[max-content] px-4 py-2";
+    const defaultClass = "flex items-center rounded-2 h-[40px] w-[max-content] px-4 py-2 cursor-pointer";
 
     const classes = {
         colors:{
@@ -22,8 +22,8 @@ export const Button = (props) =>{
     };
 
     return(
-        <div onClick ={onClick} class={defaultClass + " " + classes.sizes[size] + " " + classes.colors[color].button}>
-            <div class={classes.colors[color].text}>
+        <div onClick ={onClick} className={defaultClass + " " + classes.sizes[size] + " " + classes.colors[color].button}>
+            <div className={classes.colors[color].text}>
                 {title}
             </div>
         </div>
