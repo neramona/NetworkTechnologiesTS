@@ -80,9 +80,9 @@ class Products extends PureComponent<Props, State> {
         return (
         <>
             <Helmet>
-                    <title>Товары</title>
+                    <title>Главная</title>
                     <meta name='description' content='Смотрите наши последние товары'/>
-                    <meta name='keywords' content='товары, React'/>
+                    <meta name='keywords' content='главная, товары, React'/>
             </Helmet>
             <div className="container mx-auto p-5">
                 <h1 className="text-2xl mb-4">Товары</h1>
